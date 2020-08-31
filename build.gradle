@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "com.sparkjava:spark-core:2.8.0"
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+    compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+    compile 'com.j2html:j2html:1.4.0'
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://localhost:63342/managment_system/managment_system.main/resources/css/style.css?_ijt=p29rsh0d2tihdo3tu71c7aj5ti" rel="stylesheet" type="text/css" >
+    <title>Management System</title>
+<body class="main">
+<h1>Management System</h1>
+<form method="get" action="/clientStart">
+    <button class="button" name="person" value="specialist" type="submit" >Employees</button>
+    <button class="button" name="person" value="client" type="submit">Register</button>
+</form>
+<h2>Check appointment</h2>
+<form method="get" action="/clientPage">
+    <input type="number" name="client_id" placeholder="Enter your appointment number" required>
+    <button class="button" type="submit">Check</button>
+</form>
+</body>
+</html>
