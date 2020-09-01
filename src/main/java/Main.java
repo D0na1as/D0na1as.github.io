@@ -23,7 +23,7 @@ public class Main {
 
         Spark.port(80);
 
-        Spark.post("/home", new Route() {
+        Spark.get("/home", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
 
@@ -103,7 +103,7 @@ public class Main {
                     return template.clientPage("Management System", list.get("client_id"),
                             list.get("day"), list.get("name"), "slot_" + list.get("que_place"), list.get("status"));
                 } else {
-                    return getTextFromFile("index.html");
+                    return  "Kazkas";// getTextFromFile("index.html");
                 }
             }
         });
