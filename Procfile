@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar \out\artifacts\managment_system_jar\managment_system.jar Main
