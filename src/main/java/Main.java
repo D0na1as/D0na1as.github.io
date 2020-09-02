@@ -1,48 +1,46 @@
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Spark;
+import spark.Service;
+import spark.servlet.SparkApplication;
 
-import java.net.URI;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static j2html.TagCreator.*;
+import static spark.Service.ignite;
 
-public class Main {
+public class Main implements  spark.servlet.SparkApplication {
 
     private String chosenSpec;
 
-    public static void main(String[] args) throws Exception {
+    Database item = new Database("heroku_47fd00a889de629");
 
-        Database item = new Database("heroku_47fd00a889de629");
+    Templates template = new Templates();
 
-        Templates template = new Templates();
+    //public static void main(String[] args) throws Exception {
 
-        Spark.port(80);
+    public static void main(String[] args) {
+        SparkApplication app = new Main();
+        app.init();
 
-        Spark.get("/home", new Route() {
-            @Override
-            public Object handle(Request request, Response response) throws Exception {
+    }
+        @Override
+        public void init() {
+            Service http = ignite().port(getPort()).threadPool(20);
+            http.get("/", (request, response) -> {
+                return renderContent("./index.html");
+                //               return getTextFromFile("./index.html");
+            });
+        //}
 
-                System.out.println(request.queryParams("person"));
-                if (request.queryParams("person").equals("specialist")) {
-
-                }
-                //item.registerRecipient();
-                return html(
-                        head(
-                                title("Title")
-                        ),
-                        body(
-                                h1("Heading!")
-                        )
-                );
-            }
-        });
-        Spark.get("/clientStart", new Route() {
+         http.get("/clientStart", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
                 if (request.queryParams("person").equals("specialist")) {
@@ -78,7 +76,7 @@ public class Main {
             }
         });
 
-        Spark.post("/clientRegister", new Route() {
+         http.post("/clientRegister", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
                 String name = request.queryParams("name");
@@ -91,7 +89,7 @@ public class Main {
                         list.get("day"), list.get("name"), "slot_"+list.get("que_place"), list.get("status") );
             }
         });
-        Spark.get("/clientPage", new Route() {
+         http.get("/clientPage", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
                 String client_id = request.queryParams("client_id");
@@ -109,7 +107,7 @@ public class Main {
         });
 
         // TO-DO
-        Spark.get("/specialistPage", new Route() {
+         http.get("/specialistPage", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
 
@@ -165,7 +163,7 @@ public class Main {
             }
         });
 
-        Spark.get("/getScreen", new Route() {
+         http.get("/getScreen", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
 
@@ -174,21 +172,26 @@ public class Main {
             }
         });
 
-        Spark.get("/", new Route() {
-            @Override
-            public Object handle(Request request, Response response) throws Exception {
-                return getTextFromFile("index.html");
-            }
-        });
+    }
+    private String renderContent(String htmlFile) {
+        try {
+
+            URL url = getClass().getResource(htmlFile);
+
+            Path path = Paths.get(url.toURI());
+            return new String(Files.readAllBytes(path), Charset.defaultCharset());
+        } catch (IOException | URISyntaxException e) {
+            return "Loading error";
+        }
     }
 
-    private static String getTextFromFile(String path) {
-        try {
-            URI fullPath = com.sun.tools.javac.Main.class.getClassLoader().getResource(path).toURI();
-            return Files.readString(Paths.get(fullPath));
-        } catch (Exception e) {
-            e.printStackTrace();
+    static int getPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            System.out.println(processBuilder.environment().get("PORT"));
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
-        return "Loading error";
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
+
 }

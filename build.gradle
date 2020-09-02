@@ -1,11 +1,14 @@
 plugins {
     id 'java'
     id 'war'
+    id 'application'
    // id "com.microsoft.azure.azurefunctions" version "1.4.0"
 }
 
+
 group 'org.example'
 version '1.0-SNAPSHOT'
+mainClassName = "Main"
 
 repositories {
     mavenCentral()
@@ -19,3 +22,14 @@ dependencies {
     compile 'com.j2html:j2html:1.4.0'
 }
 
+task stage(dependsOn: ['clean', 'installDist'])
+
+jar {
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

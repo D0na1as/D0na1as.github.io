@@ -17,7 +17,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("http://localhost:63342/managment_system/managment_system.main/resources/css/style.css?_ijt=p29rsh0d2tihdo3tu71c7aj5ti"),
+                        link().withRel("stylesheet").withType("text/css").withHref("/webapp/css/styles.css"),
                         title(title)
                 ), body(
                         h1("Log in"),
@@ -36,7 +36,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("http://localhost:63342/managment_system/managment_system.main/resources/css/style.css?_ijt=p29rsh0d2tihdo3tu71c7aj5ti"),
+                        link().withRel("stylesheet").withType("text/css").withHref("/webapp/css/styles.css"),
                         title(title)
                 ), body(
                         h3(getTime()).withStyle("margin-left: 50%;"),
@@ -119,7 +119,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("http://localhost:63342/managment_system/managment_system.main/resources/css/style.css?_ijt=p29rsh0d2tihdo3tu71c7aj5ti"),
+                        link().withRel("stylesheet").withType("text/css").withHref("/webapp/css/styles.css"),
                         title(title)
                 ), body(
                         h1("Choose Specialist"),
@@ -161,7 +161,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("http://localhost:63342/managment_system/managment_system.main/resources/css/style.css?_ijt=p29rsh0d2tihdo3tu71c7aj5ti"),
+                        link().withRel("stylesheet").withType("text/css").withHref("/webapp/css/styles.css"),
                         title(title)
                 ), body(
                         h1("Client Nr.: " + client_id),
@@ -196,7 +196,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("http://localhost:63342/managment_system/managment_system.main/resources/css/style.css?_ijt=p29rsh0d2tihdo3tu71c7aj5ti"),
+                        link().withRel("stylesheet").withType("text/css").withHref("/webapp/css/styles.css"),
                         title(title)
                 ), body(
                         table(

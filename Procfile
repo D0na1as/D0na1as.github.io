@@ -1,1 +1,1 @@
-web: java -jar target/out/artifacts/managment_system_main_jar/managment_system.main.jar
+web: java -jar /build/lib/managment_system-1.0-SNAPSHOT.jar
