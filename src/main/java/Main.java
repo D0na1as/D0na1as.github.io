@@ -35,10 +35,8 @@ public class Main implements  spark.servlet.SparkApplication {
         public void init() {
             Service http = ignite().port(getPort()).threadPool(20);
             http.get("/", (request, response) -> {
-                return renderContent("./index.html");
-                //               return getTextFromFile("./index.html");
+                return renderContent("index.html");
             });
-        //}
 
          http.get("/clientStart", new Route() {
             @Override

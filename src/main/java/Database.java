@@ -349,50 +349,50 @@ public class Database {
         int minute = now.getMinute();
         if (8 > hour) {
             return slot = 1;
-        } else if (8 <= hour && 9 > hour) {
+        } else if (hour == 8) {
             if (minute < 30) {
                 return slot = 1;
             } else {
                 return slot = 2;
             }
 
-        } else if (9 <= hour && 10 > hour) {
+        } else if (hour == 9) {
             if (minute < 30) {
                 return slot = 3;
             } else {
                 return slot = 4;
             }
-        } else if (10 <= hour && 11 > hour) {
+        } else if (hour == 10) {
             if (minute < 30) {
                 return slot = 5;
             } else {
                 return slot = 6;
             }
-        } else if (11 <= hour && 12 > hour) {
+        } else if (hour == 11) {
             if (minute < 30) {
                 return slot = 7;
             } else {
                 return slot = 8;
             }
-        } else if (12 <= hour && 13 > hour) {
+        } else if (hour == 12) {
             if (minute < 30) {
                 return slot = 9;
             } else {
                 return slot = 10;
             }
-        } else if (13 <= hour && 14 > hour) {
+        } else if (hour == 13) {
             if (minute < 30) {
                 return slot = 11;
             } else {
                 return slot = 12;
             }
-        } else if (14 <= hour && 15 > hour) {
+        } else if (hour == 14) {
             if (minute < 30) {
                 return slot = 13;
             } else {
                 return slot = 14;
             }
-        } else if (15 <= hour && 16 > hour) {
+        } else if (hour == 15) {
             if (minute < 30) {
                 return slot = 15;
             } else {
