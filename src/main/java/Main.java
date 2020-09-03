@@ -42,11 +42,12 @@ public class Main implements spark.servlet.SparkApplication{ //
             Templates template = new Templates();
 
             Service http = ignite().port(getPort()).threadPool(20);
+            http.staticFileLocation("/css");
 
             http.get("/", new Route() {
                 @Override
                 public Object handle(Request request, Response response) throws Exception {
-                    return main.renderContent("index.html");
+                    return main.renderContent("/index.html");
                 }
             });
 
@@ -182,7 +183,7 @@ public class Main implements spark.servlet.SparkApplication{ //
                 }
             });
     }
-    private String renderContent(String htmlFile) {
+    public String renderContent(String htmlFile) {
         try {
 
             URL url = getClass().getResource(htmlFile);

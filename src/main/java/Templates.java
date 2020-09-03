@@ -11,13 +11,14 @@ import java.util.concurrent.TimeUnit;
 import static j2html.TagCreator.*;
 
 public class Templates {
-
+    
+    private Main main = new Main();
     public String loginSpecialist(String title, boolean success) {
         return html(
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./css/style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
                         title(title)
                 ), body(
                         h1("Log in"),
@@ -36,7 +37,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./css/style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
                         title(title)
                 ), body(
                         h3(getTime()).withStyle("margin-left: 50%;"),
@@ -119,7 +120,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./css/style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
                         title(title)
                 ), body(
                         h1("Choose Specialist"),
@@ -161,7 +162,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./css/style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
                         title(title)
                 ), body(
                         h1("Client Nr.: " + client_id),
@@ -196,7 +197,7 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./css/style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
                         title(title)
                 ), body(
                         table(
