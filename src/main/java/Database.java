@@ -86,7 +86,7 @@ public class Database {
         String query = "SELECT date From time_table WHERE  date>=NOW() and (slot_1='empty' or slot_2='empty' or slot_3='empty' " +
                 "or slot_4='empty' or slot_5='empty' or slot_6='empty' or slot_7='empty' or slot_8='empty'" +
                 "or slot_9='empty' or slot_10='empty' or slot_11='empty' or slot_12='empty' or slot_13='empty'" +
-                "or slot_14='empty' or slot_15='empty' or slot_16='empty') and specialist_name=\"" +name+ "\"";
+                "or slot_14='empty' or slot_15='empty' or slot_16='empty') and specialist_name=\"" +name+ "\" order BY date asc;";
 
         ArrayList<String> list = new ArrayList<>();
 

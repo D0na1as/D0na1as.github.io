@@ -18,9 +18,12 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("style.css"),
                         title(title)
                 ), body(
+                        div(
+                           getHome()
+                        ).withClass("top"),
                         h1("Log in"),
                         form(
                                 input().withType("number").withName("number").withPlaceholder("Enter your number in the system").isRequired(),
@@ -37,10 +40,13 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("style.css"),
                         title(title)
                 ), body(
-                        h3(getTime()).withStyle("margin-left: 50%;"),
+                        div(
+                            getHome(),
+                            h3(getTime()).withClass("clock")
+                        ).withClass("top").withStyle("float; left;"),
                         h1(schedule.getSpecialist()).withClass("h1__spc"),
                         infoTable(schedule),
 
@@ -73,7 +79,6 @@ public class Templates {
         ).render();
     }
     public ContainerTag infoTable (Schedule schedule) {
-
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         Calendar current = Calendar.getInstance();
@@ -120,9 +125,12 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("style.css"),
                         title(title)
                 ), body(
+                        div(
+                                getHome()
+                        ).withClass("top"),
                         h1("Choose Specialist"),
                         TagCreator.iffElse(condition,
                             TagCreator.iff(condition, form(
@@ -162,9 +170,13 @@ public class Templates {
                 head(
                         meta().withCharset("utf-8"),
                         meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
+                        link().withRel("stylesheet").withType("text/css").withHref("style.css"),
                         title(title)
                 ), body(
+                        div(
+                            getHome(),
+                            h3(getTime()).withClass("clock")
+                        ).withClass("top"),
                         h1("Client Nr.: " + client_id),
                         table(
                                 tr(
@@ -192,31 +204,35 @@ public class Templates {
 
     public String infoScreen(String title, ScreenData data) {
 
-        ArrayList<String> infoLines = data.getInfoLines();
-        return html(
-                head(
-                        meta().withCharset("utf-8"),
-                        meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
-                        link().withRel("stylesheet").withType("text/css").withHref("./style.css"),
-                        title(title)
-                ), body(
-                        table(
-                                tr(
+            ArrayList<String> infoLines = data.getInfoLines();
+            return html(
+                    head(
+                            meta().withCharset("utf-8"),
+                            meta().withName("viewport").withContent("width=device-width, initial-scale=1.0"),
+                            meta().attr("http-equiv", "refresh").withContent("5").withHref("https://appfornfq.herokuapp.com/getScreen"),
+                            link().withRel("stylesheet").withType("text/css").withHref("style.css"),
+                            title(title)
+                    ), body(
+                            div(
+                                    getHome()
+                            ).withClass("top").withStyle("margin-left: -45%;"),
+                            table(
+                                    tr(
 
-                                        each(data.getInfoLines(), TagCreator::th)
-                                ),
-                                each(data.getSpecialists(), spec -> tr(
-                                        th(spec),
-                                        each(data.getCounter(6), line ->
-                                                td(data.getLine(data.getSpecialists().indexOf(spec)).get(line)
-                                                        )
-                                        )
-                                 )
-                                )
-                        ).withClass("table__spc"),
-                        h1("Time: "+ getTime())
-                ).withClass("main")
-         ).render();
+                                            each(data.getInfoLines(), TagCreator::th)
+                                    ),
+                                    each(data.getSpecialists(), spec -> tr(
+                                            th(spec),
+                                            each(data.getCounter(6), line ->
+                                                    td(data.getLine(data.getSpecialists().indexOf(spec)).get(line)
+                                                    )
+                                            )
+                                            )
+                                    )
+                            ).withClass("table__spc"),
+                            h1("Time: " + getTime())
+                    ).withClass("main")
+            ).render();
     }
 
     public String slotToTime (String slot) {
@@ -304,9 +320,16 @@ public class Templates {
             return "Error";
         }
     }
+
+    private ContainerTag getHome() {
+        return form(button(
+                img().withSrc("./home.png")
+        ).withClass("button home")).withMethod("get").withAction("/");
+    }
+
     private String getTime() {
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd ' ' HH:mm");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd ' ' HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
 
         return formatter.format(date);

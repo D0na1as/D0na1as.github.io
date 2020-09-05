@@ -17,10 +17,6 @@ h1 {
         margin-top:3%;
 }
 
-.table_spc {
-
-}
-
 h2 {
     margin-top: 10%;
     margin-bottom: 2%;
@@ -234,10 +230,33 @@ div .c3 {
    margin-left: -70px;
    padding-bottom: 5px;
 }
+
 div {
     height: 20px;
 }
 
-.arrow {
+.top {
+    width: 100%;
+    display: inline-block;
+}
 
+div form{
+    width: 50%;
+    float: left;
+}
+
+div .clock {
+    width: 50%;
+    float: right;
+
+}
+.home {
+    padding: 8px 25px;
+    vertical-align: left;
+}
+
+.home img {
+    margin-left: -18px;
+    margin-right: -18px;
+    height: 30px
 }

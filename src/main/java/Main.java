@@ -19,13 +19,6 @@ import static spark.Service.ignite;
 public class Main implements spark.servlet.SparkApplication{ //
 
     private static Main main;
-    //private String chosenSpec;
-//
-//    Database item = new Database("heroku_47fd00a889de629");
-//
-//    Templates template = new Templates();
-
-    //public static void main(String[] args) throws Exception {
 
     public static void main(String[] args) {
 
@@ -41,8 +34,8 @@ public class Main implements spark.servlet.SparkApplication{ //
             Main main = new Main();
             Templates template = new Templates();
 
-            Service http = ignite().port(getPort()).threadPool(20);
-            http.staticFileLocation("/css");
+            Service http = ignite().port(80).threadPool(20);
+            http.staticFileLocation("/public");
 
             http.get("/", new Route() {
                 @Override
@@ -171,15 +164,6 @@ public class Main implements spark.servlet.SparkApplication{ //
                         }
                     }
 
-                }
-            });
-
-            http.get("/getScreen", new Route() {
-                @Override
-                public Object handle(Request request, Response response) throws Exception {
-
-                    ScreenData data = item.getScreen();
-                    return template.infoScreen("Management System", data);
                 }
             });
     }
