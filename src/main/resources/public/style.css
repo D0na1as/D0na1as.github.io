@@ -114,11 +114,14 @@ table {
 }
 
 .table__spc {
+    table-layout: auto;
     background: none;
-    display: inline-block
+    display: inline-block;
     border-collapse: collapse;
     margin-left: 20%;
     margin-right: 20%;
+    width: none;
+
 }
 
 .table__spc th:first-child {
@@ -141,39 +144,27 @@ table {
     height: 35px;
     margin-bottom: 0px;
     letter-spacing: 1px;
-    width: 5%;
 }
 
 .table__spc td {
    border-bottom: 2px solid rgba(0, 0, 0, 0.44);
    border-left: 2px solid rgba(0, 0, 0, 0.44);
 }
-/*
-
-.table__spc td:active,
-.table__spc td:hover {
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-*/
 
 th {
     border-bottom: 2px solid rgba(0, 0, 0, 0.44);
     margin-bottom: 10px;
     padding-bottom: 4px;
-    min-width: 150px;
-    max-width: 150px;
-    width: 5%;
-
+    min-width: 100px;
+    max-width: 120px;
+    width: 17%;
 }
 
 td {
     height: 30px;
     text-align: center;
-    width: inherit;
+    min-width: 100px;
     font-weight: 100;
-    min-width: 120px;
-    max-width: 150px;
 }
 
 .form__cell{

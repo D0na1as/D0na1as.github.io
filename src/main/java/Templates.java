@@ -52,6 +52,12 @@ public class Templates {
 
                         h2("Time table:").withClass("h2__spc"),
                         table(
+                                colgroup().attr("width", "10%"),
+                                colgroup().attr("width", "10%"),
+                                colgroup().attr("width", "10%"),
+                                colgroup().attr("width", "10%"),
+                                colgroup().attr("width", "10%"),
+                                colgroup().attr("width", "10%"),
                                 tr(
                                    th(
                                          div(
