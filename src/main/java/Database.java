@@ -314,23 +314,31 @@ public class Database {
         }
         int count;
         HashMap<String,String> timeList = new HashMap<String, String>();
+        Templates temp = new Templates();
         for (String spec : specList) {
             for(int i=0; i<7; i++ ) {
                 count = nr;
+
                 if (count>16 || count==0) {
                     timeList.put(spec+i,"--" );
                 } else {
-
-                    query = "select slot_" + count + " from time_table where date>=NOW() and specialist_name='" + spec + ";";
+                    query = "select slot_" + count + " from time_table where date=NOW() and specialist_name='" + spec + "';";
 
                     try (Connection connection = dataSource.getConnection();
                          PreparedStatement statement = connection.prepareStatement(query);
                          ResultSet resultSet = statement.executeQuery()) {
-                        while (resultSet.next()) {
-                            timeList.put(spec + i, resultSet.getString("slot_" + count + ""));
+                        if (resultSet==null) {
+                            timeList.put(spec+i,"--" );
+                        } else {
+                            while (resultSet.next()) {
+                                if (!resultSet.getString("slot_" + count + "").equals("empty"))
+                                    timeList.put(spec + i, temp.slotToLineNr(String.valueOf(count)));
+                            }
                         }
+
                     } catch (SQLException e) {
                         e.printStackTrace();
+                        timeList.put(spec+i,"--" );
                     }
                     count++;
                 }
@@ -347,9 +355,7 @@ public class Database {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
         int minute = now.getMinute();
-        if (8 > hour) {
-            return slot = 1;
-        } else if (hour == 8) {
+         if (hour == 8) {
             if (minute < 30) {
                 return slot = 1;
             } else {
