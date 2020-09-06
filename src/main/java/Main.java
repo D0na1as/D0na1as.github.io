@@ -39,7 +39,7 @@ public class Main implements spark.servlet.SparkApplication{ //
 
             http.get("/", new Route() {
                 @Override
-                public Object handle(Request request, Response response) throws Exception {
+                public Object handle(Request request, Response response) {
                     return main.renderContent("/index.html");
                 }
             });
@@ -82,7 +82,7 @@ public class Main implements spark.servlet.SparkApplication{ //
 
             http.post("/clientRegister", new Route() {
                 @Override
-                public Object handle(Request request, Response response) throws Exception {
+                public Object handle(Request request, Response response) {
                     String name = request.queryParams("name");
                     String day = request.queryParams("date");
                     String slot = request.queryParams("timeSlot");
@@ -95,7 +95,7 @@ public class Main implements spark.servlet.SparkApplication{ //
             });
             http.get("/clientPage", new Route() {
                 @Override
-                public Object handle(Request request, Response response) throws Exception {
+                public Object handle(Request request, Response response) {
                     String client_id = request.queryParams("client_id");
                     if (request.queryParams("cancel") != null) {
                         item.cancelBooking(client_id);
@@ -105,7 +105,7 @@ public class Main implements spark.servlet.SparkApplication{ //
                         return template.clientPage("Management System", list.get("client_id"),
                                 list.get("day"), list.get("name"), "slot_" + list.get("que_place"), list.get("status"));
                     } else {
-                        return "Kazkas";// getTextFromFile("index.html");
+                        return main.renderContent("/index.html");
                     }
                 }
             });
@@ -113,7 +113,7 @@ public class Main implements spark.servlet.SparkApplication{ //
             // TO-DO
             http.get("/specialistPage", new Route() {
                 @Override
-                public Object handle(Request request, Response response) throws Exception {
+                public Object handle(Request request, Response response) {
 
                     String number = request.queryParams("number");
                     Schedule schedule;

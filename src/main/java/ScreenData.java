@@ -10,8 +10,8 @@ public class ScreenData {
     public ScreenData(ArrayList<String> specialists, HashMap<String, String> upComing) {
         this.specialists = specialists;
         this.upComing = upComing;
-        this.infoLines = new ArrayList<String>();
-        infoLines.add("Specialist");
+        this.infoLines = new ArrayList<>();
+        infoLines.add("");
         infoLines.add("Current");
         infoLines.add("Second");
         infoLines.add("Third");

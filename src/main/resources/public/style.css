@@ -1,30 +1,33 @@
-
+* {
+    margin: 0 0;
+    padding: 0 0;
+}
 h1, h2 {
     text-align: center;
     text-transform: capitalize;
     letter-spacing: 1px;
-
-
 }
 
 h1 {
-    margin-top: 10%;
+    margin-top: 5%;
     margin-bottom: 3%;
     font-size: 300%;
 }
 
 .h1__spc {
-        margin-top:3%;
+        margin-top:5%;
 }
 
 h2 {
-    margin-top: 10%;
+    margin-top: 5%;
     margin-bottom: 2%;
     font-size: 230%;
 }
 
 .h2__spc {
-        margin-top:2%;
+        font-size: 210%;
+        margin-top:3%;
+        margin-bottom: 3%;
 }
 
 h3 {
@@ -54,19 +57,42 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-form {
+.form {
     display: block;
     float: center;
     height: 50px;
     text-align: center;
 }
 
+/* Top Home and clock */
+.top {
+    display: block;
+    margin-left: 20%;
+    margin-right: 20%;
+    width: 60%;
+    height: 5%;
+}
+.main .home__btn {
+    display: inline-block;
+    float:left;
+}
+.clock {
+    display: inline-block;
+    float: right;
+}
+ /* -------------------------- */
 p {
     color: red;
     font-size: 120%;
     font-weight: 500;
 }
 
+hr {
+    margin-left: 20%;
+    width: 60%;
+    margin-top: 5%;
+    border: 1px solid rgba(0, 0, 0, 0.54);
+}
 .reg__spec { height: 100px; }
 
 .button {
@@ -91,37 +117,28 @@ p {
     transition: 0.4s;
 }
 
-table {
-    background: rgba(0, 0, 0, 0.05);
-    display: block;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-bottom: 40px;
-    margin-top: 20px;
+.main {
     text-align: center;
-    border-collapse: collapse;
-    font-size: 18px;
 }
 
-.t_table:before {
-    content:' ';
-    margin-top: 50px;
-    margin-bottom: 50px;
-    width: 60%;
-    margin-left: 20%;
-    display: block;
-    border: 1px solid rgba(0, 0, 0, 0.54);
+.home {
+    padding: 8px 25px;
+    vertical-align: left;
 }
+
+.home img {
+    margin-left: -18px;
+    margin-right: -18px;
+    height: 30px
+}
+/*Time table*/
 
 .table__spc {
-    table-layout: auto;
+    table-layout: fixed;
+    text-align: center;
     background: none;
-    display: inline-block;
     border-collapse: collapse;
     margin-left: 20%;
-    margin-right: 20%;
-    width: none;
-
 }
 
 .table__spc th:first-child {
@@ -134,79 +151,117 @@ table {
     border-left: 2px solid rgba(0, 0, 0, 0.44);
 }
 
-.table__spc th:last-of-typelast-child {
+.table__spc th:last-child {
     border-left: 2px solid rgba(0, 0, 0, 0.44);
 }
 
 .table__spc th {
+    width: 100px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.44);
     border-left: 2px solid rgba(0, 0, 0, 0.44);
     height: 35px;
-    margin-bottom: 0px;
     letter-spacing: 1px;
 }
-
 .table__spc td {
+   width: 140px;
+   height: 100%;
    border-bottom: 2px solid rgba(0, 0, 0, 0.44);
    border-left: 2px solid rgba(0, 0, 0, 0.44);
 }
 
-th {
-    border-bottom: 2px solid rgba(0, 0, 0, 0.44);
-    margin-bottom: 10px;
-    padding-bottom: 4px;
-    min-width: 100px;
-    max-width: 120px;
-    width: 17%;
+.table__spc form{
+    margin-top: -10px;
+    margin-bottom: 0px;
+    margin-left: -1px;
+    width: 102%;
+    height: 22px;
 }
-
-td {
-    height: 30px;
-    text-align: center;
-    min-width: 100px;
-    font-weight: 100;
-}
-
-.form__cell{
+.table__spc button {
     width: 100%;
-    height: 100%;
+    height: 150%;
+    background: none;
+    border: none
 }
-
-.cell {
-    width: 101%;
-    height: 100%;
-    border: none;
-    text-decoration: none;
-    background: inherit;
-    font: inherit;
+.table__spc input {
+}
+.table__spc button:active,
+.table__spc button:hover{
+    background: none;
     outline: none;
     cursor: pointer;
-}
-.cell:active,
-.cell:hover {
+    background-color: rgba(0, 0, 0, 0.54);
+    transition: 0.2s;
     color: white;
-    height: 165%;
-    width: 102%;
-    margin-top: -6px;
-    margin-left: -1px;
-    background-color: rgba(0, 0, 0, 0.5);
-
 }
 
-.last__row td,
-.last__row th {
-    border-bottom: none;
-}
+/*Client table*/
 
-.main {
+.table__client {
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-bottom: 5%;
+    margin-top: 5%;
     text-align: center;
+    border-collapse: collapse;
+    font-size: 20px;
 }
+.table__client th{
+    background: rgba(0, 0, 0, 0.05);
+    width: 25%;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.44);
+    border-right: 1px solid rgba(0, 0, 0, 0.44);
+}
+.table__client td{
+    border-right: 1px solid rgba(0, 0, 0, 0.44);
+}
+.table__client th:last-child {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.44);
+    border-right: none;
+}
+.table__client td:last-child {
+    border: none;
+}
+
+/*Info Screen page*/
+
+.info form {
+    width: 100%;
+    display: block;
+    text-align: left;
+}
+
+.info table {
+    text-align: center;
+    margin-left: 15%;
+    width: 70%;
+    border-collapse: collapse;
+    font-weight: lighter;
+    font-size: 145%;
+    height: 50vh;
+}
+
+.info .th__first {
+   background: rgba(0, 0, 0, 0.05);
+   border-top: none;
+}
+
+.info th, .info td {
+    border-top: 2px solid rgba(0, 0, 0, 0.44);
+    border-left: 1px solid rgba(0, 0, 0, 0.44);
+}
+.info th:first-child {
+   background: rgba(0, 0, 0, 0.05);
+   border-left: none;
+}
+/* Specialist table Date/Time */
 
 th .c1 {
     height: 100%;
     width: 100%;
-    margin-bottom: -7px;
-     background-image: linear-gradient(
+    padding-right: 2px;
+    margin-bottom: -3px;
+    background-image: linear-gradient(
     to top right,
     #ffffff calc(50% - 1px),
     rgba(0, 0, 0, 0.44),
@@ -214,40 +269,10 @@ th .c1 {
 }
 
 div .c2 {
-   margin-right: -70px;
+    text-align: right;
 }
 
 div .c3 {
-   margin-left: -70px;
-   padding-bottom: 5px;
-}
-
-div {
-    height: 20px;
-}
-
-.top {
-    width: 100%;
-    display: inline-block;
-}
-
-div form{
-    width: 50%;
-    float: left;
-}
-
-div .clock {
-    width: 50%;
-    float: right;
-
-}
-.home {
-    padding: 8px 25px;
-    vertical-align: left;
-}
-
-.home img {
-    margin-left: -18px;
-    margin-right: -18px;
-    height: 30px
+    text-align: left;
+    margin-top : -3px;
 }

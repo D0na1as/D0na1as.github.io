@@ -22,7 +22,7 @@ public class Templates {
                         title(title)
                 ), body(
                         div(
-                           getHome()
+                                getHome().withClass("home__btn")
                         ).withClass("top"),
                         h1("Log in"),
                         form(
@@ -44,20 +44,14 @@ public class Templates {
                         title(title)
                 ), body(
                         div(
-                            getHome(),
-                            h3(getTime()).withClass("clock")
-                        ).withClass("top").withStyle("float; left;"),
+                                getHome().withClass("home__btn"),
+                                h3(getTime()).withClass("clock")
+                        ).withClass("top"),
                         h1(schedule.getSpecialist()).withClass("h1__spc"),
                         infoTable(schedule),
-
+                        hr(),
                         h2("Time table:").withClass("h2__spc"),
                         table(
-                                colgroup().attr("width", "10%"),
-                                colgroup().attr("width", "10%"),
-                                colgroup().attr("width", "10%"),
-                                colgroup().attr("width", "10%"),
-                                colgroup().attr("width", "10%"),
-                                colgroup().attr("width", "10%"),
                                 tr(
                                    th(
                                          div(
@@ -72,11 +66,11 @@ public class Templates {
                                              each(schedule.getDates(), day ->
                                                iffElse(!schedule.getClient().equals("0") || schedule.getData(day, slot).equals("empty") || schedule.getData(day, slot).equals("occurred") ,
                                                        td(schedule.getData(day, slot)),
-                                                       td(div(form(
+                                                       td(form(
                                                                input().withName("number").withValue(String.valueOf(schedule.getNumber())).withType("hidden"),
-                                                               button(schedule.getData(day, slot)).withClass("cell").withName("client_id").
+                                                               button(schedule.getData(day, slot)).withName("client_id").
                                                                        withValue(schedule.getData(day, slot)).withType("submit").
-                                                                       withMethod("get").withAction("/specialistPage")).withClass("form__cell"))))
+                                                                       withMethod("get").withAction("/specialistPage"))).withClass("td__active"))
                                                )
                                             )
                                     )
@@ -98,7 +92,7 @@ public class Templates {
             return section(
                         h2("Current client Nr.:" + schedule.getClient()).withClass("h2__spc"),
                     table(tr(th("date"),th("time")),
-                            tr(td(schedule.getClientDate()),td(slotToTime(schedule.getClientTime())))),
+                            tr(td(schedule.getClientDate()),td(slotToTime(schedule.getClientTime())))).withClass("table__client"),
                     form(
                             input().withName("number").withValue(String.valueOf(schedule.getNumber())).withType("hidden"),
                             input().withName("client_id").withValue(schedule.getClient()).withType("hidden"),
@@ -111,7 +105,7 @@ public class Templates {
             return section(
                     h2("Next client Nr.:" + schedule.getCurrentClient()).withClass("h2__spc"),
                     table(tr(th("date"),th("time")),
-                            tr(td(schedule.getClientDate()),td(slotToTime(schedule.getClientTime())))),
+                            tr(td(schedule.getClientDate()),td(slotToTime(schedule.getClientTime())))).withClass("table__client"),
                     form(
                             input().withName("client_id").withValue(schedule.getCurrentClient()).withType("hidden"),
                             input().withName("number").withValue(String.valueOf(schedule.getNumber())).withType("hidden"),
@@ -135,7 +129,7 @@ public class Templates {
                         title(title)
                 ), body(
                         div(
-                                getHome()
+                                getHome().withClass("home__btn")
                         ).withClass("top"),
                         h1("Choose Specialist"),
                         TagCreator.iffElse(condition,
@@ -180,8 +174,8 @@ public class Templates {
                         title(title)
                 ), body(
                         div(
-                            getHome(),
-                            h3(getTime()).withClass("clock")
+                                getHome().withClass("home__btn"),
+                                h3(getTime()).withClass("clock")
                         ).withClass("top"),
                         h1("Client Nr.: " + client_id),
                         table(
@@ -197,7 +191,7 @@ public class Templates {
                                       td(lineNr),
                                       td(specialist)
                               )
-                        ),
+                        ).withClass("table__client"),
                         TagCreator.iff(status.equals("booked"), h3("Left util appointment: " + calculateRemainTime(date, slot, status))),
                         TagCreator.iff(status.equals("occurred"), h3("Appointment successfully occurred.")),
                         TagCreator.iff(status.equals("booked"),
@@ -219,25 +213,29 @@ public class Templates {
                             link().withRel("stylesheet").withType("text/css").withHref("style.css"),
                             title(title)
                     ), body(
-                            div(
-                                    getHome()
-                            ).withClass("top").withStyle("margin-left: -45%;"),
+                            getHome(),
                             table(
+                                    colgroup().attr("width", "14%"),
+                                    colgroup().attr("width", "14%"),
+                                    colgroup().attr("width", "14%"),
+                                    colgroup().attr("width", "14%"),
+                                    colgroup().attr("width", "14%"),
+                                    colgroup().attr("width", "14%"),
+                                    colgroup().attr("width", "14%"),
                                     tr(
-
-                                            each(data.getInfoLines(), TagCreator::th)
+                                            each(data.getInfoLines(), text -> TagCreator.th(text).withClass("th__first"))
                                     ),
                                     each(data.getSpecialists(), spec -> tr(
                                             th(spec),
                                             each(data.getCounter(6), line ->
-                                                    td(data.getLine(data.getSpecialists().indexOf(spec)).get(line)
+                                                      td(data.getLine(data.getSpecialists().indexOf(spec)).get(line)
                                                     )
                                             )
                                             )
                                     )
-                            ).withClass("table__spc"),
+                            ),
                             h1("Time: " + getTime())
-                    ).withClass("main")
+                    ).withClass("info")
             ).render();
     }
 
