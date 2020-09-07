@@ -132,32 +132,11 @@ public class Templates {
                                 getHome().withClass("home__btn")
                         ).withClass("top"),
                         h1("Choose Specialist"),
-                        TagCreator.iffElse(condition,
-                            TagCreator.iff(condition, form(
-                                       input().withName("person").withValue("client").withType("hidden"),
-                                       each(specialistList, specialist ->
-                                            button(specialist).withClass("button").withName("name").withValue(specialist).withType("submit")),
-                                       TagCreator.iff(daysAppear, h3("Available day's:")),
-                                       TagCreator.iff(daysAppear, input().withName("name").withValue(specialistList.get(0)).withType("hidden")),
-                                       TagCreator.iff(daysAppear,
-                                               each(daysList, day ->
-                                                button(day).withClass("button").withName("day").withValue(day).withType("submit"))),
-                                       TagCreator.iff(slotsAppear, h3("Available time:")),
-                                       TagCreator.iff(slotsAppear, input().withName("date").withValue(daysList.get(0)).withType("hidden")),
-                                       TagCreator.iff(slotsAppear,
-                                               each(slotList, slot ->
-                                                button(slotToTime(slot)).withClass("button").withName("timeSlot").withValue(slot).withType("submit")))
-                                    ).withClass("reg__spec").withMethod("post").withAction("/clientRegister")),
-                        TagCreator.iff(!condition, form(
-                                    input().withName("person").withValue("client").withType("hidden"),
-                                    each(specialistList, specialist ->
-                                            button(specialist).withClass("button").withName("name").withValue(specialist).withType("submit")),
-                                    TagCreator.iff(daysAppear, h3("Available day's:")),
-                                    TagCreator.iff(daysAppear, input().withName("name").withValue(specialistList.get(0)).withType("hidden")),
-                                    TagCreator.iff(daysAppear,
-                                            each(daysList, day ->
-                                                    button(day).withClass("button").withName("date").withValue(day).withType("submit")))
-                                ).withClass("reg__spec").withMethod("get").withAction("/clientStart")))
+                        specialistButton(specialistList, daysAppear),
+                        iff(daysAppear, h3("Available day's:")),
+                        iff(daysAppear, daysButton(daysList, specialistList.get(0), slotsAppear)),
+                        iff(slotsAppear, h3("Available time:")),
+                        iff(condition, timeButton(slotList, specialistList.get(0), daysList.get(0)))
                     ).withClass("main")
             ).render();
     }
@@ -330,6 +309,48 @@ public class Templates {
                 img().withSrc("./home.png")
         ).withClass("button home")).withMethod("get").withAction("/");
     }
+
+    private ContainerTag specialistButton(ArrayList<String> specialistList, boolean daysAppear) {
+        if (daysAppear) {
+            return form(input().withName("person").withValue("client").withType("hidden"),
+                    each(specialistList, specialist ->
+                            button(specialist).withClass("button").withType("submit"))
+            ).withMethod("get").withAction("/clientStart");
+        } else {
+            return form(input().withName("person").withValue("client").withType("hidden"),
+                    each(specialistList, specialist ->
+                            button(specialist).withClass("button").withName("name").withValue(specialist).withType("submit"))
+            ).withMethod("get").withAction("/clientStart");
+        }
+    }
+
+    private ContainerTag daysButton(ArrayList<String> daysList, String specialist, boolean timeAppear) {
+        if (timeAppear) {
+            return form(
+                    input().withName("person").withValue("client").withType("hidden"),
+                    input().withName("name").withValue(specialist).withType("hidden"),
+                    each(daysList, day ->
+                            button(day).withClass("button").withType("submit"))
+            ).withMethod("get").withAction("/clientStart");
+        } else {
+            return form(
+                    input().withName("person").withValue("client").withType("hidden"),
+                    input().withName("name").withValue(specialist).withType("hidden"),
+                    each(daysList, day ->
+                            button(day).withClass("button").withName("date").withValue(day).withType("submit"))
+            ).withMethod("get").withAction("/clientStart");
+        }
+    }
+
+    private ContainerTag timeButton(ArrayList<String> slotList, String specialist, String day) {
+        return form( input().withName("person").withValue("client").withType("hidden"),
+                    input().withName("name").withValue(specialist).withType("hidden"),
+                    input().withName("date").withValue(day).withType("hidden") ,
+                each(slotList, slot ->
+                        button(slotToTime(slot)).withClass("button").withName("timeSlot").withValue(slot).withType("submit"))
+        ).withMethod("post").withAction("/clientRegister");
+    }
+
 
     private String getTime() {
 
