@@ -322,6 +322,8 @@ public class Database {
         for (String spec : specList) {
 
             count = getSlot();
+            System.out.println(spec);
+            System.out.println(count);
 
             if (count == 16) {
                 for (int i = 0; i < 7; i++) {
@@ -339,43 +341,45 @@ public class Database {
                      ResultSet resultSet = statement.executeQuery()) {
 
                     int line = 0;
-                    while (resultSet.next()) {
-                        for (int i=count; i<25; i++) {
-                            if (count > 16) {
-                                timeList.put(spec + line, "--");
-                                count++;
-                                line++;
-                                if (line == 7) {
-                                    break;
-                                }
-                            } else {
-                                System.out.println("i: "+i);
-                                System.out.println("line: " + line);
-                                System.out.println("count: " + count);
-                                String slot = resultSet.getString("slot_" + i);
-                                System.out.println("Slot: " + slot);
-                                if (slot.equals("empty") || slot.equals("occurred")) {
-                                   count++;
-
-                                } else {
-
-                                    if (count < 10) {
-                                        timeList.put(spec + line, "0" + count);
-                                    } else {
-                                        timeList.put(spec + line, "" + count);
-                                    }
-                                    System.out.println(slot);
+                    if (resultSet.next()) {
+                        do {
+                            System.out.println(resultSet.toString());
+                            for (int i = count; i < 25; i++) {
+                                if (count > 16) {
+                                    timeList.put(spec + line, "--");
                                     count++;
                                     line++;
-
                                     if (line == 7) {
                                         break;
                                     }
+                                } else {
+                                    String slot = resultSet.getString("slot_" + i);
+                                    System.out.println("Slot: " + slot);
+                                    if (slot.equals("empty") || slot.equals("occurred")) {
+                                        count++;
+
+                                    } else {
+
+                                        if (count < 10) {
+                                            timeList.put(spec + line, "0" + count);
+                                        } else {
+                                            timeList.put(spec + line, "" + count);
+                                        }
+                                        count++;
+                                        line++;
+
+                                        if (line == 7) {
+                                            break;
+                                        }
+                                    }
                                 }
                             }
+                        } while (resultSet.next());
+                    } else {
+                        for (int i = 0; i < 7; i++) {
+                            timeList.put(spec + i, "--");
                         }
                     }
-                    System.out.println("Baige");
 
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -393,6 +397,8 @@ public class Database {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
         int minute = now.getMinute();
+        System.out.println(hour);
+        System.out.println(minute);
          if (hour == 8) {
             if (minute < 30) {
                 return slot = 1;
