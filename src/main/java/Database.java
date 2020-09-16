@@ -24,15 +24,21 @@ public class Database {
 
     public void registerClient(String name, String date, String slot, String client_id) {
 
-        String query1 = "UPDATE time_table SET " + slot + "='" + client_id + "' WHERE date='" + date + "' AND specialist_name='" + name + "';";
+        String query1 = "UPDATE time_table SET " + slot + "='" + client_id + "' WHERE date=? AND specialist_name=?;";
 
         slot = slot.split("_")[1];
-        String query2 = "INSERT INTO `clients` (`date`, `client_id`, `time_slot`, `specialist_name`) VALUES ('" + date + "'," +
-                " '" + client_id + "', '" + slot + "', '" + name + "')";
+        String query2 = "INSERT INTO `clients` (`date`, `client_id`, `time_slot`, `specialist_name`) VALUES (?,?,?,?)";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement1 = connection.prepareStatement(query1);
              PreparedStatement statement2 = connection.prepareStatement(query2)) {
+
+            statement1.setString(1, date);
+            statement1.setString(2, name);
+            statement2.setString(1, date);
+            statement2.setString(2, client_id);
+            statement2.setString(3, slot);
+            statement2.setString(4, name);
             statement1.executeUpdate();
             statement2.executeUpdate();
         } catch (SQLException e) {
@@ -60,12 +66,12 @@ public class Database {
 
     public HashMap<String, String> getClient(String client_id) {
 
-        String query = "SELECT * FROM clients WHERE client_id = '" + client_id + "'";
+        String query = "SELECT * FROM clients WHERE client_id = ?";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
-
+             PreparedStatement statement = connection.prepareStatement(query)){
+             statement.setString(1, client_id);
+             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
 
                 HashMap<String, String> list = new HashMap<>();
@@ -89,13 +95,14 @@ public class Database {
         String query = "SELECT date From time_table WHERE  date>=NOW() and (slot_1='empty' or slot_2='empty' or slot_3='empty' " +
                 "or slot_4='empty' or slot_5='empty' or slot_6='empty' or slot_7='empty' or slot_8='empty'" +
                 "or slot_9='empty' or slot_10='empty' or slot_11='empty' or slot_12='empty' or slot_13='empty'" +
-                "or slot_14='empty' or slot_15='empty' or slot_16='empty') and specialist_name=\"" + name + "\" order BY date asc;";
+                "or slot_14='empty' or slot_15='empty' or slot_16='empty') and specialist_name=? order BY date asc;";
 
         ArrayList<String> list = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(query)){
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(resultSet.getString("date"));
             }
@@ -110,14 +117,17 @@ public class Database {
     public ArrayList<String> getSlots(String name, String day) {
 
         String query = " SELECT slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9, " +
-                "slot_10, slot_11, slot_12, slot_13, slot_14, slot_15, slot_16 FROM time_table where date='" + day + "' " +
-                "and specialist_name='" + name + "'";
+                "slot_10, slot_11, slot_12, slot_13, slot_14, slot_15, slot_16 FROM time_table where date=? " +
+                "and specialist_name=?";
 
         ArrayList<String> list = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, day);
+            statement.setString(2, name);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 for (int i = 1; i < 17; i++) {
                     if (resultSet.getString("slot_" + i).equals("empty")) {
@@ -135,14 +145,19 @@ public class Database {
 
     public void startMeeting(String time, String client_id, String number) {
 
-        String query1 = "UPDATE clients SET start_time='" + time + "' where client_id='" + client_id + "';";
-        String query2 = "UPDATE specialists SET current_client='" + client_id + "' where number='" + number + "';";
+        String query1 = "UPDATE clients SET start_time=? where client_id=?;";
+        String query2 = "UPDATE specialists SET current_client=? where number=?;";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement2 = connection.prepareStatement(query1);
-             PreparedStatement statement3 = connection.prepareStatement(query2)) {
+             PreparedStatement statement1 = connection.prepareStatement(query1);
+             PreparedStatement statement2 = connection.prepareStatement(query2)) {
+
+            statement1.setString(1, time);
+            statement1.setString(2, client_id);
+            statement2.setString(1, client_id);
+            statement2.setString(2, number);
+            statement1.executeUpdate();
             statement2.executeUpdate();
-            statement3.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,14 +166,20 @@ public class Database {
 
     public void endMeeting(String time, String client_id, String name, String slot) {
 
-        String query1 = "UPDATE time_table SET " + slot + "='occurred' where specialist_name='" + name + "' and date=(select date from clients where client_id='" + client_id + "');";
-        String query2 = "UPDATE clients SET end_time='" + time + "', status='occurred' where client_id='" + client_id + "';";
-        String query3 = "UPDATE specialists SET current_client='0' where specialist_name='" + name + "';";
+        String query1 = "UPDATE time_table SET " + slot + "='occurred' where specialist_name=? and date=(select date from clients where client_id=?);";
+        String query2 = "UPDATE clients SET end_time='" + time + "', status='occurred' where client_id=?;";
+        String query3 = "UPDATE specialists SET current_client='0' where specialist_name=?;";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement1 = connection.prepareStatement(query1);
              PreparedStatement statement2 = connection.prepareStatement(query2);
              PreparedStatement statement3 = connection.prepareStatement(query3)) {
+
+            statement1.setString(1, name);
+            statement1.setString(2, client_id);
+            statement2.setString(1, client_id);
+            statement3.setString(1, name);
+
             statement1.executeUpdate();
             statement2.executeUpdate();
             statement3.executeUpdate();
@@ -170,12 +191,14 @@ public class Database {
 
     public void cancelBooking(String client_id) {
 
-        String query1 = "SELECT time_slot from `clients` where client_id='" + client_id + "';";
+        String query1 = "SELECT time_slot from `clients` where client_id=?;";
         String slot = "slot_";
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query1);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(query1)) {
+
+            statement.setString(1, client_id);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 slot = slot + resultSet.getString("time_slot");
             }
@@ -184,13 +207,17 @@ public class Database {
         }
 
         String query2 = "UPDATE time_table SET " + slot + "='empty' WHERE date=(Select date from `clients` " +
-                "where client_id='" + client_id + "') and specialist_name=(Select specialist_name from `clients` " +
-                "where client_id='" + client_id + "');";
-        String query3 = "UPDATE clients SET status='canceled' where client_id='" + client_id + "';";
+                "where client_id=?) and specialist_name=(Select specialist_name from `clients` " +
+                "where client_id=?);";
+        String query3 = "UPDATE clients SET status='canceled' where client_id=?;";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement2 = connection.prepareStatement(query2);
              PreparedStatement statement3 = connection.prepareStatement(query3)) {
+
+            statement2.setString(1, client_id);
+            statement2.setString(2, client_id);
+            statement3.setString(1, client_id);
             statement2.executeUpdate();
             statement3.executeUpdate();
 
@@ -201,14 +228,15 @@ public class Database {
 
     public Schedule getSpecialist(String number, String client_id) {
 
-        String query = "select specialist_name, current_client from specialists where number=' " + number + "';";
+        String query = "select specialist_name, current_client from specialists where number=?;";
 
         Schedule schedule = new Schedule();
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
+            statement.setString(1, number);
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 schedule.addSpecialist(resultSet.getString("specialist_name"));
                 schedule.setClient(resultSet.getString("current_client"));
@@ -226,12 +254,14 @@ public class Database {
 
         if (client_id != null) {
 
-            query = "select date, time_slot from clients where client_id='" + client_id + "';";
+            query = "select date, time_slot from clients where client_id=?;";
             schedule.setCurrentClient(client_id);
 
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setString(1, client_id);
+                ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     schedule.setClientDate(resultSet.getString("date"));
                     schedule.setClientTime(resultSet.getString("time_slot"));
@@ -242,11 +272,13 @@ public class Database {
             }
         } else if (!schedule.getClient().equals("0")) {
 
-            query = "select date, time_slot from clients where client_id='" + schedule.getClient() + "';";
+            query = "select date, time_slot from clients where client_id=?;";
 
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setString(1, schedule.getClient());
+                ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     schedule.setClientDate(resultSet.getString("date"));
                     schedule.setClientTime(resultSet.getString("time_slot"));
@@ -256,11 +288,13 @@ public class Database {
             }
 
         } else {
-            query = "select client_id, date, time_slot from clients where status='booked' and specialist_name='" + schedule.getSpecialist() + "' and date>=CURDATE() order BY date asc limit 1;";
+            query = "select client_id, date, time_slot from clients where status='booked' and specialist_name=? and date>=CURDATE() order BY date asc limit 1;";
 
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(query);
-                 ResultSet resultSet = statement.executeQuery()) {
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+
+                statement.setString(1, schedule.getSpecialist());
+                ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     schedule.setCurrentClient(resultSet.getString("client_id"));
                     schedule.setClientDate(resultSet.getString("date"));
@@ -274,13 +308,15 @@ public class Database {
         }
         query = "select date, slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, " +
                 "slot_7, slot_8, slot_9, slot_10, slot_11, slot_12, slot_13, slot_14, " +
-                "slot_15, slot_16 from time_table where specialist_name='" + schedule.getSpecialist() + "' and " +
+                "slot_15, slot_16 from time_table where specialist_name=? and " +
                 "date >= CURDATE() order BY date asc limit 5; ";
 
 
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, schedule.getSpecialist());
+            ResultSet resultSet = statement.executeQuery();
             int counter = 0;
             while (resultSet.next()) {
                 schedule.addDate(resultSet.getString("date"));
@@ -322,8 +358,6 @@ public class Database {
         for (String spec : specList) {
 
             count = getSlot();
-            System.out.println(spec);
-            System.out.println(count);
 
             if (count == 16) {
                 for (int i = 0; i < 7; i++) {
@@ -343,7 +377,6 @@ public class Database {
                     int line = 0;
                     if (resultSet.next()) {
                         do {
-                            System.out.println(resultSet.toString());
                             for (int i = count; i < 25; i++) {
                                 if (count > 16) {
                                     timeList.put(spec + line, "--");
@@ -354,7 +387,6 @@ public class Database {
                                     }
                                 } else {
                                     String slot = resultSet.getString("slot_" + i);
-                                    System.out.println("Slot: " + slot);
                                     if (slot.equals("empty") || slot.equals("occurred")) {
                                         count++;
 
@@ -397,8 +429,6 @@ public class Database {
         LocalDateTime now = LocalDateTime.now();
         int hour = now.getHour();
         int minute = now.getMinute();
-        System.out.println(hour);
-        System.out.println(minute);
          if (hour == 8) {
             if (minute < 30) {
                 return slot = 1;
